@@ -1,0 +1,14 @@
+# Dockerfile.parent
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Kopiere das parent Python-Skript
+COPY docker_latency.py .
+COPY requirements.txt .
+
+# Installiere Abhängigkeiten (falls erforderlich)
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Starte das parent worker
+CMD ["python", "-u", "docker_latency.py", "parent", "0.0.0.0", "5000", "100"]

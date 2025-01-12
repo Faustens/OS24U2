@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  parent:
+    build:
+      context: ./python
+      dockerfile: Dockerfile_Parent
+    container_name: parent_container # Name des Containers
+    networks:
+      - local_net
+    ports:
+      - "5000:5000"
+    volumes:
+      - ../results:/results # Bindet das Verzeichnis ../results auf den Host ins Containerverzeichnis /results ein
+
+  child:
+    build:
+      context: ./python
+      dockerfile: Dockerfile_Child
+    container_name: child_container # Name des Containers
+    networks:
+      - local_net
+    depends_on:
+      - parent
+    volumes:
+      - ../results:/results # Gleicher Volume-Mount wie beim parent-Container
+
+networks:
+  local_net:
+    driver: bridge
